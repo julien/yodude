@@ -35,6 +35,6 @@ func indexHandler() http.Handler {
 
 func welcomeHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Weclome back!"))
+		w.Write([]byte("Weclome to YOREDDIT"))
 	})
 }
