@@ -12,8 +12,8 @@ import (
 )
 
 type yo struct {
-	from     string    `json:"from"`
-	received time.Time `json:"received"`
+	From     string    `json:"from"`
+	Received time.Time `json:"received"`
 }
 
 var (
