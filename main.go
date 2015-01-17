@@ -60,7 +60,7 @@ func yoHandler() http.Handler {
 			return
 		}
 
-		y := yo{from: s, received: t}
+		y := yo{From: s, Received: t}
 		yos = append(yos, y)
 
 		enc := json.NewEncoder(w)
@@ -79,7 +79,7 @@ func yosHandler() http.Handler {
 
 		if s != "" {
 			for i := 0; i < len(yos); i++ {
-				if yos[i].from == s {
+				if yos[i].From == s {
 					out = append(out, yos[i])
 				}
 			}
