@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-    if *port == "" {
+	if *port == "" {
 		*port = "8080"
 	}
 }
@@ -22,9 +22,9 @@ func main() {
 
 	http.Handle("/", indexHandler())
 	http.Handle("/weclome", welcomeHandler())
-    fmt.Printf("listening on port %v\n", *port)
+	fmt.Printf("listening on port %v\n", *port)
 
-    http.ListenAndServe(":"+ *port, nil)
+	http.ListenAndServe(":"+*port, nil)
 }
 
 func indexHandler() http.Handler {

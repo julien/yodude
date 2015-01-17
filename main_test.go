@@ -10,7 +10,7 @@ import (
 func TestMain(m *testing.M) {
 
 	var t *testing.T
-    if *port != "" {
+	if *port != "" {
 		t.Errorf("got %v want 8080", *port)
 	}
 
