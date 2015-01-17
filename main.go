@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 
 	http.Handle("/", indexHandler())
-	http.Handle("/weclome", welcomeHandler())
+	http.Handle("/welcome", welcomeHandler())
 	fmt.Printf("listening on port %v\n", *port)
 
 	http.ListenAndServe(":"+*port, nil)
