@@ -12,10 +12,10 @@ import (
 )
 
 type yo struct {
-	Location string   `json:"location"`
-	URL      string   `json:"url"`
-	Username string   `json:"username"`
-	UserIP   string   `json:"user_ip"`
+	Location string `json:"location"`
+	URL      string `json:"url"`
+	Username string `json:"username"`
+	UserIP   string `json:"user_ip"`
 }
 
 type response struct {
@@ -28,7 +28,7 @@ const (
 )
 
 var (
-	port  = flag.String("port", os.Getenv("PORT"), "http port")
+	port = flag.String("port", os.Getenv("PORT"), "http port")
 )
 
 func init() {
@@ -41,10 +41,10 @@ func main() {
 	flag.Parse()
 
 	http.Handle("/", indexHandler())
-    http.Handle("/static/", staticHandler())
-    http.Handle("/yo", yoHandler())
+	http.Handle("/static/", staticHandler())
+	http.Handle("/yo", yoHandler())
 	fmt.Printf("listening on port %v\n", *port)
-    http.ListenAndServe(":"+*port, nil)
+	http.ListenAndServe(":"+*port, nil)
 }
 
 func indexHandler() http.Handler {
@@ -101,15 +101,13 @@ func createYO(m map[string][]string) (yo, error) {
 		y.UserIP = m["user_ip"][0]
 	}
 
-    ref := firebase.NewReference(fbURL)
+	ref := firebase.NewReference(fbURL)
 
 	if err := ref.Push(y); err != nil {
-        fmt.Println("Firebase error", err)
+		fmt.Println("Firebase error", err)
 
 		return y, err
 	}
 
 	return y, nil
 }
-
-
