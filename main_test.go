@@ -22,16 +22,16 @@ func TestIndexHandler(t *testing.T) {
 	http.NewRequest("GET", "/", nil)
 	w := httptest.NewRecorder()
 
-
 	if w.Code != http.StatusOK {
 		t.Errorf("got %v want 200", w.Code)
 	}
+
 }
 
-func TestWelcomeHandler(t *testing.T) {
+func TestStaticHandler(t *testing.T) {
 
-	h := welcomeHandler()
-	r, _ := http.NewRequest("GET", "/welcome", nil)
+	h := staticHandler()
+	r, _ := http.NewRequest("GET", "/static/style.css", nil)
 	w := httptest.NewRecorder()
 
 	h.ServeHTTP(w, r)
@@ -43,7 +43,7 @@ func TestWelcomeHandler(t *testing.T) {
 
 func TestYoHandler(t *testing.T) {
 	h := yoHandler()
-	r, _ := http.NewRequest("GET", "/yo?username=TITOJU", nil)
+    r, _ := http.NewRequest("GET", "/yo?username=SOMEONE&location=45.234,3.8983&user_ip=0.0.0.0&url=http://localhost", nil)
 	w := httptest.NewRecorder()
 
 	h.ServeHTTP(w, r)

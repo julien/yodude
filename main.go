@@ -5,21 +5,19 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
-	"regexp"
-	"strings"
-	"time"
 )
 
 type yo struct {
-	From     string    `json:"from"`
-	Received time.Time `json:"received"`
+	Username string `json:"username"`
+	Location []string `json:"location"`
+	URL      string `json:"url"`
+	UserIp   string `json:"user_ip"`
 }
 
 var (
-	port       = flag.String("port", os.Getenv("PORT"), "http port")
-	userRegexp = regexp.MustCompile(`username=`)
-	yos        []yo
+	port = flag.String("port", os.Getenv("PORT"), "http port")
 )
 
 func init() {
@@ -32,63 +30,45 @@ func main() {
 
 	flag.Parse()
 
-	yos = make([]yo, 0)
-
-	http.Handle("/welcome", welcomeHandler())
+	http.Handle("/", indexHandler())
+	http.Handle("/static/", staticHandler())
 	http.Handle("/yo", yoHandler())
-	http.Handle("/yos", yosHandler())
 	fmt.Printf("listening on port %v\n", *port)
 
 	http.ListenAndServe(":"+*port, nil)
 }
 
-func welcomeHandler() http.Handler {
+func indexHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Return a template here
-		w.Write([]byte("Weclome to YOREDDIT"))
+		http.ServeFile(w, r, "index.html")
 	})
+}
+
+func staticHandler() http.Handler {
+    return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+        http.ServeFile(w, r, r.URL.Path[1:])
+    })
 }
 
 func yoHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		s := strings.Replace(r.URL.RawQuery, "username=", "", -1)
-		t := time.Now()
-
-		if s == "" {
+		m, _ := url.ParseQuery(r.URL.RawQuery)
+		if m == nil || m["username"] == nil {
 			http.Error(w, "No username received", http.StatusBadRequest)
 			return
 		}
 
-		y := yo{From: s, Received: t}
-		yos = append(yos, y)
+		// y := yo{
+		// 	Username: m["username"][0],
+		// 	Location: m["location"],
+		// 	URL:      m["url"][0],
+		// 	UserIp:   m["user_ip"][0],
+		// }
 
 		enc := json.NewEncoder(w)
 		w.Header().Set("Content-Type", "application/json")
-		enc.Encode(yos)
+		enc.Encode([]byte("{\"message\": \"yo received\"}"))
 
-	})
-}
-
-func yosHandler() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		s := strings.Replace(r.URL.RawQuery, "username=", "", -1)
-
-		out := make([]yo, 0)
-
-		if s != "" {
-			for i := 0; i < len(yos); i++ {
-				if yos[i].From == s {
-					out = append(out, yos[i])
-				}
-			}
-		} else {
-			out = yos
-		}
-
-		enc := json.NewEncoder(w)
-		w.Header().Set("Content-Type", "application/json")
-		enc.Encode(yos)
 	})
 }
