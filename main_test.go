@@ -43,7 +43,7 @@ func TestStaticHandler(t *testing.T) {
 
 func TestYoHandler(t *testing.T) {
 	h := yoHandler()
-    r, _ := http.NewRequest("GET", "/yo?username=SOMEONE&location=45.234,3.8983&user_ip=0.0.0.0&url=http://localhost", nil)
+	r, _ := http.NewRequest("GET", "/yo?username=SOMEONE&location=45.234,3.8983&user_ip=0.0.0.0&url=http://localhost", nil)
 	w := httptest.NewRecorder()
 
 	h.ServeHTTP(w, r)
