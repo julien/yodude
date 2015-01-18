@@ -2,14 +2,15 @@
 <html>
 <head>
   <title>YOREDDIT</title>
-  <style>
-    body {
-      font: normal 1.1em monospace;
-    }
-  </style>
+  <link rel="stylesheet" href="/static/style.css"></script>
 </head>
 
 <body>
+
+  <header class="header">
+    <h1>YOREDDIT</h1>
+    <div id="yo-button" class="m10-auto"></div>
+  </header>
 
   <script type='text/javascript'>
     var _yoData = {
@@ -21,6 +22,6 @@
     s.src = '//yoapp.s3.amazonaws.com/js/yo-button.js';
     (document.head || document.getElementsByTagName('head')[0]).appendChild(s);
   </script>
-
+  <script src="/static/main.js"></script>
 </body>
 </html>
