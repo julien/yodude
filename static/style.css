@@ -1,17 +1,4 @@
 
-body {
-  font: normal 1.1em monospace;
-}
+body { font: normal 1.1em monospace; }
 
-.header {
-  text-align: center;
-}
-
-.top-right {
-  position: fixed;
-  top: 0; right: 5px;
-}
-
-.m10-auto {
-  margin: 10px auto;
-}
+.header { }
