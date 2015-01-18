@@ -12,13 +12,11 @@ import (
 )
 
 type yo struct {
-	Location string `json:"location"`
+	Location string   `json:"location"`
 	URL      string   `json:"url"`
 	Username string   `json:"username"`
 	UserIP   string   `json:"user_ip"`
 }
-
-type yos map[string]yo
 
 type response struct {
 	Message string `json:"message"`
@@ -40,15 +38,11 @@ func init() {
 }
 
 func main() {
-
 	flag.Parse()
 
 	http.Handle("/", indexHandler())
     http.Handle("/static/", staticHandler())
-
     http.Handle("/yo", yoHandler())
-    http.Handle("/yos", yosHandler())
-
 	fmt.Printf("listening on port %v\n", *port)
     http.ListenAndServe(":"+*port, nil)
 }
@@ -118,25 +112,4 @@ func createYO(m map[string][]string) (yo, error) {
 	return y, nil
 }
 
-func yosHandler() http.Handler {
-    return http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
 
-        res, _ := listYOS()
-
-		enc := json.NewEncoder(w)
-		w.Header().Set("Content-Type", "application/json")
-		enc.Encode(&res)
-
-    })
-}
-
-func listYOS() (yos, error) {
-    var out yos
-
-    ref := firebase.NewReference(fbURL).Auth(fbToken).Export(false)
-
-    if err := ref.Value(&out); err != nil {
-        return nil, err
-    }
-    return out, nil
-}
